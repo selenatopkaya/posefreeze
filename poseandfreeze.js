@@ -89,7 +89,7 @@ function freezeScreen() {
     moveWebcamTo("cam-freeze");
 }
 
-// game over scherm
+// game over scherm 
 function gameoverScreen() {
     currentMode = "gameover";
     currentScreen("gameover");

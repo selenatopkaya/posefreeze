@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pose & Freeze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+</head>
+<body>
+    <!-- STARTSCHERM -->
+    <img src="images/ice_png.png" alt="Ice image" class="icebanner">
+    <div class="panels screen" id="start">
+        <div class="leftpanel"> 
+            <div class="byMe">By Selena Topkaya</div>
+            <div class="titlebox">
+                <h1 class="title">POSE & FREEZE</h1>
+                <img src="images/stickmansvg.svg" alt="stickman" class="titleimg">
+            </div>
+            <div class="stickman"></div>
+            <div class="uitleg">
+                <p>Doe elke pose na — maar als het spel "Freeze!" roept, mag je niet meer bewegen.</p>
+            </div>
+            <div class="countdown">
+                <div class="countdown-line"></div>
+                <span id="start-countdown">3</span>
+                <div class="countdown-line"></div>
+            </div>
+        </div>
+
+        <div class="centerpanel">
+            <div id="cam-start"></div>
+
+            <div class="detect-wrap">
+                <div class="detect-track">
+                    <div class="detect-fill"></div>
+                </div>
+                <div class="detectlabel">Detectie</div>
+            </div>
+            <div class="gestures">
+                <div class="gesturebox">
+                    <img src="images/armenomhoog.svg" alt="armen omhoog">
+                    <div>
+                        <div class="gesturename">ARMEN OMHOOG</div>
+                        <div class="gesturep">Houd 3 seconden vol om het spel te starten!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rightpanel">
+            <div class="leaderboard">
+                <h3>LEADERBOARD</h3>
+                <ol class="leaderboardlist">
+                    <li class="players">
+                        <span class="player-number">1</span>
+                        <span class="player-name">Speler 1</span>
+                        <span class="player-score">150</span>
+                    </li>
+                    <li class="players">
+                        <span class="player-number">2</span>
+                        <span class="player-name">Speler 2</span>
+                        <span class="player-score">120</span>
+                    </li>
+                    <li class="players">
+                        <span class="player-number">3</span>
+                        <span class="player-name">Speler 3</span>
+                        <span class="player-score">100</span>
+                    </li>
+                </ol>
+            </div>
+            <button type="button" onclick="init()">Start</button>
+        </div>
+        <button class="schermbutton" onclick="gameScreen()">Ga naar spelscherm</button>
+    </div>
+
+
+
+    <!--  SPEL SCHERM -->
+    <div class="screen" id="spel">
+        <div class="panels">
+            <div class="leftpanel">
+                <div class="pose-label">TE DOEN POSE</div>
+                <div class="pose-card">
+                    <img src="images/poses_tpose.svg" alt="T-pose">
+                    <div class="pose-card-name">T-POSE</div>
+                    <div class="pose-card-desc">Armen recht opzij uitgestrekt</div>
+                </div>
+            </div>
+            <div class="centerpanel">
+                <div id="cam-spel"></div>
+
+                <div class="detect-wrap">
+                    <div class="detect-track"><div class="detect-fill"></div></div>
+                    <div class="detectlabel">Detectie</div>
+                </div>
+                <div class="countdown">
+                    <div class="countdown-line"></div>
+                    5
+                    <div class="countdown-line"></div>
+                </div>
+            </div>
+            <div class="rightpanel">
+                <div class="voortgang-title">VOORTGANG</div>
+                <div class="voortgang-list">
+                    <div class="voortgang-item active">
+                        <span class="poses-num">1</span>
+                        <span class="poses-name">T-POSE</span>
+                        <span class="poses-arrow">▶</span>
+                    </div>
+                    <div class="voortgang-item">
+                        <span class="poses-num">2</span>
+                        <span class="poses-name">HANDEN OP HOOFD</span>
+                        <span class="poses-arrow"></span>
+                    </div>
+                    <div class="voortgang-item">
+                        <span class="poses-num">3</span>
+                        <span class="poses-name">MR. KRAB</span>
+                        <span class="poses-arrow"></span>
+                    </div>
+                    <div class="voortgang-item">
+                        <span class="poses-num">4</span>
+                        <span class="poses-name">ARMEN OMHOOG</span>
+                        <span class="poses-arrow"></span>
+                    </div>
+                    <div class="voortgang-item">
+                        <span class="poses-num">5</span>
+                        <span class="poses-name">BALLERINA</span>
+                        <span class="poses-arrow"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="schermbutton" onclick="freezeScreen()">Ga naar freeze</button>
+    </div>
+
+
+    <!--  FREEZE SCHERM -->
+    <div class="screen" id="freeze">
+        <div class="freeze-title">
+            <span class="freeze-dash">-</span>
+            FREEZE!
+            <span class="freeze-dash">-</span>
+        </div>
+        <div class="freeze-sub">BEWEEG NIET!</div>
+        
+        <div id="cam-freeze"></div>
+
+        <div class="detect-wrap freeze-detect">
+            <div class="detect-track">
+                <div class="detect-fill red"></div>
+            </div>
+            <div class="detectlabel red">Bewegingsdetectie</div>
+        </div>
+        <div class="countdown freeze-countdown">
+            <div class="countdown-line"></div>
+            5
+            <div class="countdown-line"></div>
+        </div>
+        <button class="schermbutton" onclick="gameoverScreen()">Ga naar game over</button>
+    </div>
+
+
+    <!--  GAMEOVER SCHERM -->
+    <div class="screen" id="gameover">
+        <div class="go-left">
+            <div class="go-title">GAME<br>OVER</div>
+            <div class="go-reason">BEWEGING GEDETECTEERD</div>
+        </div>
+        <div class="go-center">
+            <div id="cam-gameover"></div>
+
+            
+            <div class="go-choices">
+                <div class="go-card blue">
+                    <img src="images/armenomhoog.svg" alt="armen omhoog">
+                    <div class="go-card-name">ARMEN OMHOOG</div>
+                    <div class="go-card-sub">Om opnieuw te spelen</div>
+                </div>
+                <div class="go-card red">
+                    <img src="images/armenomlaag.svg" alt="armen omlaag">
+                    <div class="go-card-name">ARMEN OMLAAG</div>
+                    <div class="go-card-sub">Om te stoppen</div>
+                </div>
+            </div>
+        </div>
+        <div class="go-right">
+            <div class="leaderboard">
+                <h3>LEADERBOARD</h3>
+                <ol class="leaderboardlist">
+                    <li class="players"><span class="lb-num">1</span>
+                    <span class="lb-name">Speler 1</span>
+                    <span class="lb-score">230</span></li>
+
+                    <li class="players"><span class="lb-num">2</span>
+                    <span class="lb-name">Speler 2</span>
+                    <span class="lb-score">230</span></li>
+
+                    <li class="players"><span class="lb-num">3</span>
+                    <span class="lb-name">Speler 3</span>
+                    <span class="lb-score">230</span></li>
+                </ol>
+            </div>
+        </div>
+        <button class="schermbutton" onclick="startScreen()">Terug naar start</button>
+    </div>
+
+    <div id="webcam-component" style="display:none;">
+        <div class="camera">
+            <div><canvas id="canvas"></canvas></div>
+            <div id="label-container"></div>
+        </div>
+    </div>
+
+    <script src="poseandfreeze.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--  teachebale machine
+<div>Teachable Machine Pose Model</div>
+<button type="button" onclick="init()">Start</button>
+<div><canvas id="canvas"></canvas></div>
+<div id="label-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "./my_model/";
+    let model, webcam, ctx, labelContainer, maxPredictions;
+
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // Note: the pose library adds a tmPose object to your window (window.tmPose)
+        model = await tmPose.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const size = 200;
+        const flip = true; // whether to flip the webcam
+        webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append/get elements to the DOM
+        const canvas = document.getElementById("canvas");
+        canvas.width = size; canvas.height = size;
+        ctx = canvas.getContext("2d");
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop(timestamp) {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+
+        // finally draw the poses
+        drawPose(pose);
+    }
+
+    function drawPose(pose) {
+        if (webcam.canvas) {
+            ctx.drawImage(webcam.canvas, 0, 0);
+            // draw the keypoints and skeleton
+            if (pose) {
+                const minPartConfidence = 0.5;
+                tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+                tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            }
+        }
+    }
+</script>
+-->

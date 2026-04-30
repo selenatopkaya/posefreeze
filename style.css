@@ -1,0 +1,570 @@
+/*  ALGEMEEN  */
+body {
+    background-color: rgb(21, 22, 56);
+    color: white;
+    font-family: "DM Mono", monospace;
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/bg.jpg');
+    opacity: 0.2;
+    z-index: -1;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.schermbutton {
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #00cfcf;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    z-index: 9999;
+}
+
+#spel .centerpanel {
+    padding-top: 1.5em;
+}
+
+#spel .leftpanel {
+    margin-top: 6em;
+}
+
+#spel .rightpanel {
+    margin-top: 7.5em;
+}
+
+#spel .countdown {
+    margin-top: 1em;
+}
+
+#gameover .leaderboard {
+    margin-top: 6.5em;
+}
+
+/*  STARTSCHERM  */
+.icebanner {
+    width: 100%;
+    height: 220px;
+    position: fixed;
+    z-index: 1000;
+}
+
+.title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 5em;
+    letter-spacing: 4px;
+    margin: 0;
+}
+
+.titlebox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 2em;
+}
+
+.titleimg {
+    height: 200px;
+}
+
+.byMe {
+    margin-top: 10em;
+    padding-left: 2em;
+    color: #9AE1FF;
+}
+
+.uitleg {
+    padding: 0 2em;
+}
+
+.panels {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    height: 100vh;
+}
+
+.leftpanel, .centerpanel, .rightpanel {
+    padding: 1em;
+}
+
+.leftpanel, .centerpanel {
+    border-right: 1px solid #ADADAD;
+}
+
+.uitleg, .gesturep {
+    color: #9AE1FF;
+}
+
+.gesturename {
+    color: #9AE1FF;
+    font-weight: bold;
+    font-size: 2.2em;
+    text-shadow: 0 0 10px #00cfcf;
+}
+
+.gestures {
+    border: 2px solid #ADADAD;
+    border-radius: 10px;  
+    padding: 10px;       
+    background-color: #312F4A; 
+    display: block;
+    width: 100%;
+    text-align: left;    
+    box-sizing: border-box;
+}
+
+.gesturebox {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.gestures img {
+    height: 150px;
+    padding: 0.5em 2em;
+}
+
+
+.camera {
+    background-color: black;
+    border: 2px solid #ADADAD;
+    border-radius: 10px;
+    width: 100%;
+    height: 500px;
+    padding: 1em;
+    box-sizing: border-box;
+    margin: 0 0 2em 0;
+    margin-top: 7em;
+}
+
+
+#canvas {
+    border-radius: 10px;
+}
+
+#label-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.rightpanel {
+    margin-top: 5.6em;
+}
+
+.leaderboard {
+    width: 100%;
+    text-align: left;
+    letter-spacing: 3px;
+}
+
+.leaderboardlist {
+    padding: 0 5em;
+    line-height: 5em;
+    color: #d1f0fd;
+    text-shadow: 0 0 10px #00cfcf;
+}
+
+.leaderboard h3 {
+    font-family: "Bebas Neue", sans-serif;
+    padding-left: 1.8em;
+    letter-spacing: 5px;
+    font-size: 1.5em;
+            
+}
+
+.player-score {
+    text-align: right;
+}
+
+.detect-wrap {
+    margin: 2em 0;
+}
+
+.detect-track {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(255,255,255,0.2); 
+    border-radius: 10px;
+}
+
+.detectlabel {
+    margin-top: 0.5em;
+    font-family: "DM Mono", monospace;
+    font-size: 0.9em;
+    color: #18d822;
+}
+
+.countdown {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 5em;
+    color: #9AE1FF;
+    text-align: center;
+    margin: 2.8em 0 0 0;
+    text-shadow: 0 0 10px #00cfcf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.screen {
+    display: none;
+}
+
+/*  SPEL SCHERM  */
+
+.pose-label {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.85em;
+    letter-spacing: 3px;
+    color: #9AE1FF;
+    margin-bottom: 0.5em;
+}
+
+.pose-card {
+    border: 2px solid #9AE1FF;
+    border-radius: 12px;
+    background: #1e1e40;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.pose-card img {
+    height: 200px;
+}
+
+.pose-card-name {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2em;
+    color: #9AE1FF;
+    text-shadow: 0 0 10px #00cfcf;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.pose-card-desc {
+    color: #9AE1FF;
+    font-size: 0.85em;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.cam-label {
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 3px;
+    font-size: 0.85em;
+    color: #9AE1FF;
+    margin-bottom: 0.5em;
+}
+
+
+.countdown-line {
+    flex: 1;
+    height: 2px;
+    background: #9AE1FF;
+    opacity: 0.4;
+    max-width: 120px;
+}
+
+.voortgang-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.2em;
+    letter-spacing: 4px;
+    color: white;
+    margin-bottom: 1em;
+}
+
+.voortgang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+}
+
+.voortgang-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    background: #1e1e40;
+    border: 1px solid #3a3a6a;
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 2px;
+    font-size: 1em;
+    color: #9AE1FF;
+}
+
+.players {
+    display: flex;
+    align-items: center;
+    background: #bdbdd34f;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0 1em;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 2px;
+    font-size: 1.2em;
+    color: #9AE1FF;
+}
+
+.voortgang-item.active {
+    border-color: #9AE1FF;
+    background: #2a2a5a;
+    box-shadow: 0 0 10px rgba(154,225,255,0.2);
+}
+
+.poses-num {
+    color: rgba(154,225,255,0.5);
+    min-width: 20px;
+}
+
+.voortgang-item.active .poses-num {
+    color: #9AE1FF;
+}
+
+.poses-name { flex: 1; }
+
+.poses-arrow { color: transparent; }
+
+.voortgang-item.active .poses-arrow {
+    color: #9AE1FF;
+}
+
+/*  FREEZE SCHERM  */
+#freeze {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    gap: 1.8em;
+    text-align: center;
+}
+
+
+.freeze-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 5.5em;
+    color: #9AE1FF;
+    text-shadow: 0 0 25px #00cfcf, 0 0 50px rgba(0,207,207,0.3);
+    letter-spacing: 6px;
+    line-height: 1;
+    margin: 0;
+    margin-top: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+}
+
+.camera.freeze-camera {
+    width: 420px;
+    height: 320px;
+    border-radius: 12px;
+}
+
+.freeze-dash {
+    font-size: 0.6em;
+    opacity: 0.6;
+}
+
+.freeze-sub {
+    font-size: 1em;
+    letter-spacing: 4px;
+    color: #9AE1FF;
+    margin-top: 0;
+    opacity: 0.8;
+}
+
+#cam-freeze {
+    width: 420px;
+    height: 320px;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid #9AE1FF;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.detect-wrap.freeze-detect {
+    width: 420px;
+    margin: 0;
+}
+
+.detect-fill.red {
+    background: #e02020;
+    width: 25%;
+}
+
+.detectlabel.red {
+    color: #e02020;
+}
+
+.countdown.freeze-countdown {
+    width: 420px;
+    margin: 0;
+}
+
+/*  GAME OVER SCHERM  */
+#gameover {
+    display: none;
+    grid-template-columns: 1fr 2fr 1fr;
+    min-height: 100vh;
+}
+
+.go-left {
+    background: linear-gradient(135deg, #2a0000 0%, #0a0010 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3em 2em;
+    border-right: 1px solid #3a0000;
+}
+
+.go-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 7em;
+    color: #e02020;
+    line-height: 0.9;
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(220,0,0,0.4);
+}
+
+.go-reason {
+    font-size: 0.8em;
+    color: #e02020;
+    letter-spacing: 3px;
+    margin-top: 1.5em;
+}
+
+.go-center {
+    padding: 3em 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    border-right: 1px solid #ADADAD;
+}
+
+.go-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+
+.go-card {
+    border-radius: 12px;
+    padding: 1.5em 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+    text-align: center;
+}
+
+.go-card.blue {
+    border: 2px solid #9AE1FF;
+    background: #1e1e40;
+}
+
+.go-card.red {
+    border: 2px solid #e02020;
+    background: #2a0010;
+}
+
+.go-card img {
+    height: 140px;
+}
+
+.go-card-name {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.6em;
+    letter-spacing: 2px;
+}
+
+.go-card.blue .go-card-name {
+    color: #9AE1FF;
+    text-shadow: 0 0 10px #00cfcf;
+}
+
+.go-card.red .go-card-name {
+    color: #e02020;
+    text-shadow: 0 0 10px rgba(220,0,0,0.5);
+}
+
+.go-card-sub {
+    font-size: 0.8em;
+    color: rgba(255,255,255,0.5);
+}
+
+.go-right {
+    padding: 3em 2em;
+}
+
+.lb-num {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.5em;
+    color: #9AE1FF;
+    min-width: 40px;
+    line-height: 1;
+}
+
+.lb-name { flex: 1; font-size: 0.95em; }
+
+.lb-score {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.8em;
+}
+
+.leaderboardlist {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.leaderboardlist li {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    color: #d1f0fd;
+    text-shadow: 0 0 10px #00cfcf;
+}
+
+
+/* Nog toevoegen
+mooiere start buttons
+speler namen kader
+timers
+freeze scherm
+scroll game over
+aanduiding titel per pose
+detectie balkje laten werken
+*/

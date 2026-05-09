@@ -303,72 +303,71 @@ function detectGameover(prediction) {
     }
 }
 
-    // Helper to find the visible countdown element in the design
-    function getVisibleCountdownElement() {
-        // Try .freeze-countdown first (freeze screen), then .centerpanel .countdown (spel/start), fallback to any visible .countdown
-        let el = document.querySelector('.screen[style*="display: grid"] .freeze-countdown');
-        if (!el) {
-            el = document.querySelector('.screen[style*="display: grid"] .centerpanel .countdown');
-        }
-        if (!el) {
-            // fallback: any visible .countdown in a visible .screen
-            el = Array.from(document.querySelectorAll('.screen')).find(s => s.style.display !== 'none')?.querySelector('.countdown');
-        }
-        return el;
+// Helper to find the visible countdown element in the design
+function getVisibleCountdownElement() {
+    // Try .freeze-countdown first (freeze screen), then .centerpanel .countdown (spel/start), fallback to any visible .countdown
+    let el = document.querySelector('.screen[style*="display: grid"] .freeze-countdown');
+    if (!el) {
+        el = document.querySelector('.screen[style*="display: grid"] .centerpanel .countdown');
     }
-
-    function showCountdownInDesign(seconds) {
-        const el = getVisibleCountdownElement();
-        if (el) {
-            el.style.visibility = 'visible';
-            el.querySelector('.countdown-number').textContent = seconds;
-        }
+    if (!el) {
+        // fallback: any visible .countdown in a visible .screen
+        el = Array.from(document.querySelectorAll('.screen')).find(s => s.style.display !== 'none')?.querySelector('.countdown');
     }
+    return el;
+}
 
-    function updateCountdownInDesign(seconds) {
-        const el = getVisibleCountdownElement();
-        if (el) {
-            el.querySelector('.countdown-number').textContent = seconds;
-        }
+function showCountdownInDesign(seconds) {
+    const el = getVisibleCountdownElement();
+    if (el) {
+        el.style.visibility = 'visible';
+        el.querySelector('.countdown-number').textContent = seconds;
     }
+}
 
-    function hideCountdownInDesign() {
-        const el = getVisibleCountdownElement();
-        if (el) el.style.visibility = 'hidden';
+function updateCountdownInDesign(seconds) {
+    const el = getVisibleCountdownElement();
+    if (el) {
+        el.querySelector('.countdown-number').textContent = seconds;
     }
+}
 
-    function startPoseTimer(mode, seconds, callback) {
-        if (timerRunning) return;
-        if (currentMode !== mode) return;
+function hideCountdownInDesign() {
+    const el = getVisibleCountdownElement();
+    if (el) el.style.visibility = 'hidden';
+}
 
-        timerRunning = true;
-        let timeLeft = seconds;
-        showCountdownInDesign(timeLeft);
-        // Disable all .schermbutton buttons during countdown
-        const schermButtons = document.querySelectorAll('.schermbutton');
-        schermButtons.forEach(btn => btn.disabled = true);
-        const interval = setInterval(() => {
-            timeLeft--;
-            if (timeLeft > 0) {
-                updateCountdownInDesign(timeLeft);
-            } else {
-                clearInterval(interval);
-                timerRunning = false;
-                hideCountdownInDesign();
-                // Re-enable schermbutton buttons after transition
-                setTimeout(() => {
-                    schermButtons.forEach(btn => btn.disabled = false);
-                }, 600);
-                // Smooth transition: fade out overlay, then call callback
-                setTimeout(() => {
-                    callback();
-                }, 500);
-            }
-            if (currentMode !== mode) {
-                clearInterval(interval);
-                timerRunning = false;
-                hideCountdownInDesign();
+function startPoseTimer(mode, seconds, callback) {
+    if (timerRunning) return;
+    if (currentMode !== mode) return;
+    timerRunning = true;
+    let timeLeft = seconds;
+    showCountdownInDesign(timeLeft);
+    // Disable all .schermbutton buttons during countdown
+    const schermButtons = document.querySelectorAll('.schermbutton');
+    schermButtons.forEach(btn => btn.disabled = true);
+    const interval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            updateCountdownInDesign(timeLeft);
+        } else {
+            clearInterval(interval);
+            timerRunning = false;
+            hideCountdownInDesign();
+            // Re-enable schermbutton buttons after transition
+            setTimeout(() => {
                 schermButtons.forEach(btn => btn.disabled = false);
-            }
-        }, 1000);
-    }
+            }, 600);
+            // Smooth transition: fade out overlay, then call callback
+            setTimeout(() => {
+                callback();
+            }, 500);
+        }
+        if (currentMode !== mode) {
+            clearInterval(interval);
+            timerRunning = false;
+            hideCountdownInDesign();
+            schermButtons.forEach(btn => btn.disabled = false);
+        }
+    }, 1000);
+}

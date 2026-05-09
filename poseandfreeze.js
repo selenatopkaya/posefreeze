@@ -48,7 +48,8 @@ function currentScreen(id) {
         e.style.display = "none";
     });
 
-    document.querySelector("#" + id).style.display = "grid";
+    const displays = { start: "grid", spel: "grid", freeze: "flex", gameover: "grid" };
+    document.querySelector("#" + id).style.display = displays[id] || "grid";
 }
 
 // startscherm
@@ -105,6 +106,12 @@ function updatePoseCard() {
         poseCardImg.src = imgSrc;
         poseCardImg.alt = pose ? pose.label : '';
     }
+
+    // Zet active class op het juiste voortgang item
+    document.querySelectorAll('.voortgang-item').forEach((item, i) => {
+        item.classList.toggle('active', i === currentPoseIndex);
+        item.querySelector('.poses-arrow').textContent = i === currentPoseIndex ? '▶' : '';
+    });
 }
 
 // freeze scherm

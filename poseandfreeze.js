@@ -128,12 +128,14 @@ startScreen();
 // functie om webcam naar juiste scherm te verplaatsen
 function moveWebcamTo(slotId) {
     const slot = document.getElementById(slotId);
-    const webcam = document.getElementById("webcam-component");
+    const webcamComponent = document.getElementById("webcam-component");
 
-    if (slot && webcam) {
-        slot.innerHTML = "";
-        slot.appendChild(webcam);
-        webcam.style.display = "block";
+    if (slot && webcamComponent) {
+        if (!slot.contains(webcamComponent)) {
+            slot.innerHTML = "";
+            slot.appendChild(webcamComponent);
+        }
+        webcamComponent.style.display = "block";
     }
 }
 
@@ -312,22 +314,20 @@ function detectGameover(prediction) {
         const el = getVisibleCountdownElement();
         if (el) {
             el.style.visibility = 'visible';
-            el.innerHTML = `<div class="countdown-line"></div>${seconds}<div class="countdown-line"></div>`;
+            el.querySelector('.countdown-number').textContent = seconds;
         }
     }
 
     function updateCountdownInDesign(seconds) {
         const el = getVisibleCountdownElement();
         if (el) {
-            el.innerHTML = `<div class="countdown-line"></div>${seconds}<div class="countdown-line"></div>`;
+            el.querySelector('.countdown-number').textContent = seconds;
         }
     }
 
     function hideCountdownInDesign() {
         const el = getVisibleCountdownElement();
-        if (el) {
-            el.style.visibility = 'hidden';
-        }
+        if (el) el.style.visibility = 'hidden';
     }
 
     function startPoseTimer(mode, seconds, callback) {

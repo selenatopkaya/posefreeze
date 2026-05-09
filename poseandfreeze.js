@@ -10,6 +10,7 @@ let poseSequence = [
 ];
 let currentPoseIndex = 0;
 
+// Map met classNames uit Teachable Machine
 const poseClassMap = {
     tpose: "T-pose",
     handenopheofd: "Handen-op-hoofd",
@@ -30,16 +31,16 @@ function currentScreen(id) {
 // startscherm
 function startScreen() {
     currentMode = "start";
-    started = false; // Reset so the game can start again
+    started = false; // Reset zodat countdown weer werkt als je terugkomt op start
     currentScreen("start");
-    moveWebcamTo("cam-start");
+    moveWebcamTo("cam-start"); // webcam naar start scherm verplaatsen
 }
 
 // spelschermen
 function gameScreen(reset = false) {
     currentMode = "spel";
     currentScreen("spel");
-    moveWebcamTo("cam-spel");
+    moveWebcamTo("cam-spel"); // webcam naar spel scherm verplaatsen
 
     if (reset) {
         currentPoseIndex = 0;
@@ -49,7 +50,7 @@ function gameScreen(reset = false) {
 }
 
 function updatePoseCard() {
-    // Update the pose card in the spel screen to show the current pose
+    // Update the pose card in het spelscherm met de huidige pose info
     const poseCardName = document.querySelector('#spel .pose-card-name');
     const poseCardDesc = document.querySelector('#spel .pose-card-desc');
     const poseCardImg = document.querySelector('#spel .pose-card img');
@@ -86,19 +87,19 @@ function updatePoseCard() {
 function freezeScreen() {
     currentMode = "freeze";
     currentScreen("freeze");
-    moveWebcamTo("cam-freeze");
+    moveWebcamTo("cam-freeze"); // webcam naar freeze scherm verplaatsen
 }
 
 // game over scherm test
 function gameoverScreen() {
     currentMode = "gameover";
     currentScreen("gameover");
-    moveWebcamTo("cam-gameover");
+    moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
 }
 
 startScreen();
 
-
+// functie om webcam naar juiste scherm te verplaatsen
 function moveWebcamTo(slotId) {
     const slot = document.getElementById(slotId);
     const webcam = document.getElementById("webcam-component");
@@ -279,7 +280,7 @@ function detectGameover(prediction) {
         }
         return el;
     }
-
+    
     function showCountdownInDesign(seconds) {
         const el = getVisibleCountdownElement();
         if (el) {

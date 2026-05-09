@@ -270,6 +270,7 @@ function detectFreeze(prediction) {
     // Als pose correct is → timer starten
     if (poseDetected && poseDetected.probability > 0.90) {
         startPoseTimer("freeze", 5, () => {
+            currentScore += 100; // 100 punten als je de pose correct hebt
             currentPoseIndex++;
             if (currentPoseIndex < poseSequence.length) {
                 gameScreen(); // GEEN reset!

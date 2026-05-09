@@ -10,6 +10,29 @@ let poseSequence = [
 ];
 let currentPoseIndex = 0;
 
+let currentScore = 0;
+
+function getScores() {
+    return JSON.parse(localStorage.getItem("posefreeze") || "[]");
+}
+
+function saveScore(score) {
+    const name = document.getElementById("player-name-input").value.trim() || "Speler";
+    const scores = [...getScores(), { name, score }]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+    localStorage.setItem("posefreeze", JSON.stringify(scores));
+}
+
+function renderLeaderboard(id) {
+    document.getElementById(id).innerHTML = getScores()
+        .map((e, i) => `<li class="players">
+            <span class="player-number">${i + 1}</span>
+            <span class="player-name">${e.name}</span>
+            <span class="player-score">${e.score}</span>
+        </li>`).join("") || "<li>Nog geen scores</li>";
+}
+
 // Map met classNames uit Teachable Machine
 const poseClassMap = {
     tpose: "T-pose",
@@ -34,6 +57,7 @@ function startScreen() {
     started = false; // Reset zodat countdown weer werkt als je terugkomt op start
     currentScreen("start");
     moveWebcamTo("cam-start"); // webcam naar start scherm verplaatsen
+    renderLeaderboard("leaderboard-start");
 }
 
 // spelschermen
@@ -95,6 +119,8 @@ function gameoverScreen() {
     currentMode = "gameover";
     currentScreen("gameover");
     moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
+    saveScore(currentScore);
+    renderLeaderboard("leaderboard-gameover");
 }
 
 startScreen();
@@ -280,7 +306,7 @@ function detectGameover(prediction) {
         }
         return el;
     }
-    
+
     function showCountdownInDesign(seconds) {
         const el = getVisibleCountdownElement();
         if (el) {

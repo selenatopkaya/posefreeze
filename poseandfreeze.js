@@ -205,6 +205,8 @@ async function predict() {
     if (currentMode === "gameover") detectGameover(prediction);
 
     drawPose(pose);
+
+    updateDetectBar(prediction);
 }
 
 function drawPose(pose) {
@@ -219,7 +221,27 @@ function drawPose(pose) {
     }
 }
 
+// werkende detectiebalk 
+function updateDetectBar(prediction) {
+    let targetClass = null;
 
+    if (currentMode === "start") {
+        targetClass = "Armen-omhoog";
+    } else if (currentMode === "spel" || currentMode === "freeze") {
+        const currentPose = poseSequence[currentPoseIndex];
+        if (currentPose) targetClass = poseClassMap[currentPose.name] || currentPose.name;
+    }
+
+    if (!targetClass) return;
+
+    const match = prediction.find(p => p.className === targetClass);
+    const score = match ? match.probability : 0;
+
+    // Alle balkjes op het huidige scherm updaten
+    document.querySelectorAll(".detect-fill").forEach(bar => {
+        bar.style.width = (score * 100) + "%";
+    });
+}
 // detecties
 
 function detectStart(prediction) {

@@ -442,6 +442,8 @@ html, body {
     justify-content: center;
     padding: 3em 2em;
     border-right: 1px solid #3a0000;
+    align-items: center;
+    text-align: center;
 }
 
 .go-title {
@@ -586,7 +588,9 @@ button {
     background-color: #1e1e40;
     font-family: "Bebas Neue", sans-serif;
     letter-spacing: 2px;
-    width: 384px;
+    width: 350px;
+    color: white;
+    font-size: 1.2em;
 }
 
 #player-name-input::placeholder {
@@ -598,10 +602,14 @@ button {
 #camerabutton {
     background-color: rgb(147, 209, 233);
     border: none;
-    padding: 0.5em 1.5em;
     border-radius: 8px;
     letter-spacing: 2px;
     color: black;
+    height: 45px;
+    width: 100px;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
 }
 
 #resetbutton {
@@ -635,7 +643,7 @@ timers --------------------- ok
 freeze scherm -------------- ok
 scroll game over ----------- ok
 aanduiding titel per pose -- ok
-detectie balkje laten werken xxxxxxxx
+detectie balkje laten werken ok
 letter size en locatie aanpassen xxxxxxx
 game over scherm aanpassingen
 */

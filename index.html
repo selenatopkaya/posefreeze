@@ -60,9 +60,11 @@
             </div>
             <input type="text" id="player-name-input" placeholder="Jouw naam..." maxlength="16">
             <button type="button" id="camerabutton" onclick="init()">Start</button>
+            <div class="buttons">
+                <button class="schermbutton" onclick="gameScreen()">Ga naar spelscherm</button>
+                <button id="resetbutton" onclick="localStorage.removeItem('posefreeze'); location.reload()">Reset scores</button>
+            </div>
         </div>
-        <button class="schermbutton" onclick="gameScreen()">Ga naar spelscherm</button>
-        <button id="reset" onclick="localStorage.removeItem('posefreeze'); location.reload()">Reset scores</button>
     </div>
 
 
@@ -120,9 +122,11 @@
                         <span class="poses-arrow"></span>
                     </div>
                 </div>
+                <div class="buttons">
+                    <button class="schermbutton" id="btnEnkel" onclick="freezeScreen()">Ga naar freeze</button>
+                </div>
             </div>
         </div>
-        <button class="schermbutton" onclick="freezeScreen()">Ga naar freeze</button>
     </div>
 
 
@@ -179,9 +183,9 @@
             <div class="leaderboard">
                 <h3>LEADERBOARD</h3>
                 <ol class="leaderboardlist" id="leaderboard-gameover"></ol>
+                <button class="schermbutton" onclick="startScreen()">Terug naar start</button>
             </div>
         </div>
-        <button class="schermbutton" onclick="startScreen()">Terug naar start</button>
     </div>
 
     <div id="webcam-component" style="display:none;">

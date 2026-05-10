@@ -29,13 +29,9 @@ html, body {
     height: 50px;
     border-radius: 50px;
     background-color: rgb(147, 209, 233);
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
     color: black;
     border: none;
     padding: 10px 20px;
-    z-index: 9999;
 }
 
 #spel .centerpanel {
@@ -570,7 +566,9 @@ html, body {
 
 button {
     cursor: pointer;
-    background-color: rgb(147, 209, 233);
+    letter-spacing: 2px;
+    border: none;
+    transition: all 0.2s ease;
 }
 
 .detect-fill {
@@ -606,19 +604,32 @@ button {
     color: black;
 }
 
-#reset {
-    background-color: rgb(147, 209, 233);
+#resetbutton {
+    background-color: rgb(184, 214, 226);
     border: none;
     padding: 0.5em 1.5em;
-    border-radius: 8px;
+    border-radius: 50px;
     letter-spacing: 2px;
     color: black;
     width: 200px;
     height: 50px;
 }
 
+.buttons {
+    display: flex;
+    gap: 1em;
+    bottom: 2em;
+    position: absolute;
+    right: 3%;
+}
+
+button:hover {
+    box-shadow: 0 0 35px rgba(154,225,255,0.6);
+    transform: translateY(-1px);
+}
+
 /* Nog toevoegen
-mooiere start buttons + plaatsing xxxxxx
+mooiere start buttons ------ ok
 speler namen kader --------- ok
 timers --------------------- ok
 freeze scherm -------------- ok

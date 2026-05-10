@@ -548,6 +548,7 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
+    font-size: 1.3em;
 }
 
 .leaderboardlist li {
@@ -580,12 +581,50 @@ button {
     transition: width 0.2s ease;
 }
 
+#player-name-input {
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    border: 1px solid #ADADAD;
+    background-color: #1e1e40;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 2px;
+    width: 384px;
+}
+
+#player-name-input::placeholder {
+    color: #ffffff;
+    opacity: 0.7;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#camerabutton {
+    background-color: rgb(147, 209, 233);
+    border: none;
+    padding: 0.5em 1.5em;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    color: black;
+}
+
+#reset {
+    background-color: rgb(147, 209, 233);
+    border: none;
+    padding: 0.5em 1.5em;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    color: black;
+    width: 200px;
+    height: 50px;
+}
+
 /* Nog toevoegen
-mooiere start buttons
+mooiere start buttons + plaatsing xxxxxx
 speler namen kader --------- ok
 timers --------------------- ok
 freeze scherm -------------- ok
 scroll game over ----------- ok
 aanduiding titel per pose -- ok
-detectie balkje laten werken
+detectie balkje laten werken xxxxxxxx
+letter size en locatie aanpassen xxxxxxx
+game over scherm aanpassingen
 */

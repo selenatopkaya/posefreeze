@@ -59,10 +59,10 @@
                 <ol class="leaderboardlist" id="leaderboard-start"></ol>
             </div>
             <input type="text" id="player-name-input" placeholder="Jouw naam..." maxlength="16">
-            <button type="button" onclick="init()">Start</button>
+            <button type="button" id="camerabutton" onclick="init()">Start</button>
         </div>
         <button class="schermbutton" onclick="gameScreen()">Ga naar spelscherm</button>
-        <button onclick="localStorage.removeItem('posefreeze'); location.reload()">Reset scores</button>
+        <button id="reset" onclick="localStorage.removeItem('posefreeze'); location.reload()">Reset scores</button>
     </div>
 
 

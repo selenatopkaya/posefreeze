@@ -145,7 +145,7 @@ function updatePoseCard() {
                 imgSrc = 'images/poses_handsonhead.svg';
 
             } else if (pose.name === 'mrkrab') {
-                desc = 'Handen in een krabvorm naast je hoofd';
+                desc = 'Handen en benen in een krabvorm naast je hoofd';
                 imgSrc = 'images/poses_mrkrab.svg';
 
             } else if (pose.name === 'armenomhoog') {
@@ -153,7 +153,7 @@ function updatePoseCard() {
                 imgSrc = 'images/poses_armenomhoog.svg';
 
             } else if (pose.name === 'ballerina') {
-                desc = 'Sta rechtop met één been omhoog en armen rond';
+                desc = 'Één arm omhoog, andere arm omlaag, één been opzij geheven';
                 imgSrc = 'images/poses_ballerina.svg';
             }
         }
@@ -423,17 +423,17 @@ function startPoseTimer(mode, seconds, callback) {
             timerRunning = false;
             hideCountdownInDesign();
 
-            // Re-enable schermbutton buttons after transition
+            // Voorkom dat gebruiker direct weer pose kan doen tijdens schermovergang
             setTimeout(() => {
                 schermButtons.forEach(btn => btn.disabled = false);
             }, 600);
 
-            // Smooth transition: fade out overlay, then call callback
+            // Voorkom dat callback direct pose detectie triggert tijdens schermovergang
             setTimeout(() => {
                 callback();
             }, 500);
         }
-        
+
         if (currentMode !== mode) {
             clearInterval(interval);
             timerRunning = false;

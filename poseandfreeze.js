@@ -1,6 +1,9 @@
 let currentMode = "start";
 let timerRunning = false;
 let started = false;
+let currentPoseIndex = 0;
+let currentScore = 0;
+
 let poseSequence = [
     { name: "tpose", label: "T-POSE" },
     { name: "handenopheofd", label: "HANDEN OP HOOFD" },
@@ -8,9 +11,17 @@ let poseSequence = [
     { name: "armenomhoog", label: "ARMEN OMHOOG" },
     { name: "ballerina", label: "BALLERINA" }
 ];
-let currentPoseIndex = 0;
 
-let currentScore = 0;
+// Map met classNames uit Teachable Machine
+const poseClassMap = {
+    tpose: "T-pose",
+    handenopheofd: "Handen-op-hoofd",
+    mrkrab: "Mr-krab",
+    armenomhoog: "Armen-omhoog",
+    ballerina: "Ballerina"
+};
+
+// SCORES
 
 function getScores() {
     return JSON.parse(localStorage.getItem("posefreeze") || "[]");
@@ -18,10 +29,12 @@ function getScores() {
 
 function saveScore(score) {
     const name = document.getElementById("player-name-input").value.trim() || "Speler";
-    const scores = [...getScores(), { name, score }]
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 3);
-    localStorage.setItem("posefreeze", JSON.stringify(scores));
+    
+    const allScores = [...getScores(), { name, score }];
+    const sortedScores = allScores.sort((a, b) => b.score - a.score);
+    const top3 = sortedScores.slice(0, 3);
+
+    localStorage.setItem("posefreeze", JSON.stringify(top3));
 }
 
 function renderLeaderboard(id) {
@@ -32,15 +45,6 @@ function renderLeaderboard(id) {
             <span class="player-score">${e.score}</span>
         </li>`).join("") || "<li>Nog geen scores</li>";
 }
-
-// Map met classNames uit Teachable Machine
-const poseClassMap = {
-    tpose: "T-pose",
-    handenopheofd: "Handen-op-hoofd",
-    mrkrab: "Mr-krab",
-    armenomhoog: "Armen-omhoog",
-    ballerina: "Ballerina"
-};
 
 // algemene scherm om andere schermen aan te roepen
 function currentScreen(id) {
@@ -88,15 +92,19 @@ function updatePoseCard() {
             if (pose.name === 'tpose') {
                 desc = 'Armen recht opzij uitgestrekt';
                 imgSrc = 'images/poses_tpose.svg';
+
             } else if (pose.name === 'handenopheofd') {
                 desc = 'Beide handen op je hoofd';
                 imgSrc = 'images/poses_handsonhead.svg';
+
             } else if (pose.name === 'mrkrab') {
                 desc = 'Handen in een krabvorm naast je hoofd';
                 imgSrc = 'images/poses_mrkrab.svg';
+
             } else if (pose.name === 'armenomhoog') {
                 desc = 'Beide armen omhoog gestrekt';
                 imgSrc = 'images/poses_armenomhoog.svg';
+
             } else if (pose.name === 'ballerina') {
                 desc = 'Sta rechtop met één been omhoog en armen rond';
                 imgSrc = 'images/poses_ballerina.svg';

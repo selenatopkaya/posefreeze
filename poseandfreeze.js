@@ -46,14 +46,21 @@ function renderLeaderboard(id) {
         </li>`).join("") || "<li>Nog geen scores</li>";
 }
 
+
+// SCHERMEN 
+
 // algemene scherm om andere schermen aan te roepen
 function currentScreen(id) {
     document.querySelectorAll(".screen").forEach((e) => {
         e.style.display = "none";
     });
 
-    const displays = { start: "grid", spel: "grid", freeze: "flex", gameover: "grid" };
-    document.querySelector("#" + id).style.display = displays[id] || "grid";
+    const displays = document.querySelector(`#${id}`);
+    if (id === "freeze") {
+        displays.style.display = "flex";
+    } else {
+        displays.style.display = "grid";
+    }
 }
 
 // startscherm
@@ -77,6 +84,24 @@ function gameScreen(reset = false) {
 
     updatePoseCard();
 }
+
+// freeze scherm
+function freezeScreen() {
+    currentMode = "freeze";
+    currentScreen("freeze");
+    moveWebcamTo("cam-freeze"); // webcam naar freeze scherm verplaatsen
+}
+
+// game over scherm test
+function gameoverScreen() {
+    currentMode = "gameover";
+    currentScreen("gameover");
+    moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
+    saveScore(currentScore);
+    renderLeaderboard("leaderboard-gameover");
+}
+
+startScreen();
 
 function updatePoseCard() {
     // Update the pose card in het spelscherm met de huidige pose info
@@ -122,23 +147,6 @@ function updatePoseCard() {
     });
 }
 
-// freeze scherm
-function freezeScreen() {
-    currentMode = "freeze";
-    currentScreen("freeze");
-    moveWebcamTo("cam-freeze"); // webcam naar freeze scherm verplaatsen
-}
-
-// game over scherm test
-function gameoverScreen() {
-    currentMode = "gameover";
-    currentScreen("gameover");
-    moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
-    saveScore(currentScore);
-    renderLeaderboard("leaderboard-gameover");
-}
-
-startScreen();
 
 // functie om webcam naar juiste scherm te verplaatsen
 function moveWebcamTo(slotId) {

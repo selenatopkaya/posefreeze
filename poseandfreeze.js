@@ -38,7 +38,7 @@ const poseClassMap = {
     tpose: "T-pose",
     handenopheofd: "Handen-op-hoofd",
     mrkrab: "Mr-krab",
-    armenohoog: "Armen-omhoog",
+    armenomhoog: "Armen-omhoog",
     ballerina: "Ballerina"
 };
 

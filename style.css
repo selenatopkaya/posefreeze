@@ -170,10 +170,8 @@ html, body {
 }
 
 #label-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: none;
 }
-
 
 .rightpanel {
     margin-top: 5.6em;

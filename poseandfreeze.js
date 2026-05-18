@@ -21,6 +21,16 @@ const poseClassMap = {
     sporter: "Sporter"
 };
 
+// RESET GAME STATUS
+
+function resetGameState() {
+    currentPoseIndex = 0;
+    currentScore = 0;
+    timerRunning = false;
+    started = false;
+    hideCountdownInDesign();
+}
+
 // SCORES
 
 function getScores() {
@@ -65,8 +75,8 @@ function currentScreen(id) {
 
 // startscherm
 function startScreen() {
+    resetGameState();
     currentMode = "start";
-    started = false; // Reset zodat countdown weer werkt als je terugkomt op start
     currentScreen("start");
     moveWebcamTo("cam-start"); // webcam naar start scherm verplaatsen
     renderLeaderboard("leaderboard-start");
@@ -99,6 +109,7 @@ function gameoverScreen() {
     moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
     saveScore(currentScore);
     renderLeaderboard("leaderboard-gameover");
+    startPoseTimer("gameover", 5, () => startScreen());
 }
 
 startScreen();
@@ -302,7 +313,6 @@ function detectSpel(prediction) {
     if (!currentPose) return;
 
     const className = poseClassMap[currentPose.name] || currentPose.name;
-
     const poseDetected = prediction.find(p => p.className === className);
 
     if (poseDetected && poseDetected.probability > 0.70) {
@@ -310,7 +320,7 @@ function detectSpel(prediction) {
         const poseCard = document.querySelector('#spel .pose-card');
         if (poseCard) {
             poseCard.style.transition = 'background 0.3s';
-            poseCard.style.background = '#b6fcb6';
+            poseCard.style.background = '#8bc58b';
         }
 
         // Timer direct starten

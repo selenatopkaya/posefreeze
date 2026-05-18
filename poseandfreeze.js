@@ -376,16 +376,13 @@ function detectGameover(prediction) {
 
 // Helper to find the visible countdown element in the design
 function getVisibleCountdownElement() {
-    // Try .freeze-countdown first (freeze screen), then .centerpanel .countdown (spel/start), fallback to any visible .countdown
-    let el = document.querySelector('.screen[style*="display: grid"] .freeze-countdown');
-    if (!el) {
-        el = document.querySelector('.screen[style*="display: grid"] .centerpanel .countdown');
+    if (currentMode === "freeze") {
+        return document.querySelector("#freeze .freeze-countdown");
     }
-    if (!el) {
-        // fallback: any visible .countdown in a visible .screen
-        el = Array.from(document.querySelectorAll('.screen')).find(s => s.style.display !== 'none')?.querySelector('.countdown');
+    if (currentMode === "spel" || currentMode === "start") {
+        return document.querySelector(".screen:not([style*='display: none']) .countdown");
     }
-    return el;
+    return null;
 }
 
 function showCountdownInDesign(seconds) {

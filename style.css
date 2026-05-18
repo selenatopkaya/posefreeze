@@ -446,13 +446,31 @@ html, body {
     min-height: 100vh;
 }
 
+.gameover-win .go-title {
+    color: #4cff4c;
+    text-shadow: 0 0 30px rgba(17, 131, 13, 0.4);
+}
+
+.gameover-win .go-reason {
+    color: #7cdf7c;
+}
+
+.gameover-lose .go-title {
+    color: #e02020;
+    text-shadow: 0 0 30px rgba(220,0,0,0.4);
+}
+
+.gameover-lose .go-reason {
+    color: #ffb6b6;
+}
+
 .go-left {
-    background: linear-gradient(135deg, #2a0000 0%, #0a0010 100%);
+    background: linear-gradient(135deg, #000000 0%, #0a0010 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 3em 2em;
-    border-right: 1px solid #3a0000;
+    border-right: 1px solid #000000;
     align-items: center;
     text-align: center;
 }

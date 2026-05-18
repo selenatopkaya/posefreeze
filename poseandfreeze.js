@@ -103,12 +103,34 @@ function freezeScreen() {
 }
 
 // game over scherm test
-function gameoverScreen() {
+function gameoverScreen(win = false, reason = "") {
     currentMode = "gameover";
     currentScreen("gameover");
-    moveWebcamTo("cam-gameover"); // webcam naar gameover scherm verplaatsen
+    moveWebcamTo("cam-gameover");
+
     saveScore(currentScore);
     renderLeaderboard("leaderboard-gameover");
+
+    const screen = document.getElementById("gameover");
+    const title = screen.querySelector(".go-title");
+    const reasonText = screen.querySelector(".go-reason");
+
+    if (win) {
+        // WIN UI
+        screen.classList.remove("gameover-lose");
+        screen.classList.add("gameover-win");
+
+        title.innerHTML = "GEWONNEN!";
+        reasonText.innerText = "Je hebt alle poses correct uitgevoerd!";
+    } else {
+        // LOSE UI
+        screen.classList.remove("gameover-win");
+        screen.classList.add("gameover-lose");
+
+        title.innerHTML = "GAME<br>OVER";
+        reasonText.innerText = reason || "Beweging gedetecteerd";
+    }
+
     startPoseTimer("gameover", 5, () => startScreen());
 }
 
@@ -342,25 +364,26 @@ function detectFreeze(prediction) {
     const className = poseClassMap[currentPose.name] || currentPose.name;
     const poseDetected = prediction.find(p => p.className === className);
 
-    // Als pose correct is → timer starten
+    // Pose correct → timer starten
     if (poseDetected && poseDetected.probability > 0.80) {
         startPoseTimer("freeze", 5, () => {
-            currentScore += 100; // 100 punten als je de pose correct hebt
+            currentScore += 100;
             currentPoseIndex++;
 
-            // Na freeze scherm, direct naar volgende pose of game over
-            if (currentPoseIndex < poseSequence.length) {
+            // WIN: alle poses gedaan
+            if (currentPoseIndex >= poseSequence.length) {
+                gameoverScreen(true); // WIN
+            } 
+            else {
                 gameScreen();
-            } else {
-                gameoverScreen();
             }
         });
+
+        return;
     }
 
-    // Als pose fout is → direct game over
-    if (poseDetected && poseDetected.probability < 0.50) {
-        gameoverScreen();
-    } 
+    // Pose fout → direct game over
+    gameoverScreen(false, "Beweging gedetecteerd");
 }
 
 

@@ -164,7 +164,7 @@ function updatePoseCard() {
                 imgSrc = 'images/poses_armenomhoog.svg';
 
             } else if (pose.name === 'sporter') {
-                desc = 'Een sporter pose';
+                desc = 'Maak een loopbeweging: één arm voor, één arm achter';
                 imgSrc = 'images/poses_sporter.svg';
             }
         }
@@ -294,7 +294,7 @@ function detectStart(prediction) {
     }
 
     // Als pose correct is, start countdown
-    if (score > 0.7 && !started) {
+    if (score > 0.8 && !started) {
         started = true;
 
         // Start een countdown van 3 seconden voordat je naar het spel gaat
@@ -315,7 +315,7 @@ function detectSpel(prediction) {
     const className = poseClassMap[currentPose.name] || currentPose.name;
     const poseDetected = prediction.find(p => p.className === className);
 
-    if (poseDetected && poseDetected.probability > 0.70) {
+    if (poseDetected && poseDetected.probability > 0.80) {
 
         const poseCard = document.querySelector('#spel .pose-card');
         if (poseCard) {
@@ -343,7 +343,7 @@ function detectFreeze(prediction) {
     const poseDetected = prediction.find(p => p.className === className);
 
     // Als pose correct is → timer starten
-    if (poseDetected && poseDetected.probability > 0.70) {
+    if (poseDetected && poseDetected.probability > 0.80) {
         startPoseTimer("freeze", 5, () => {
             currentScore += 100; // 100 punten als je de pose correct hebt
             currentPoseIndex++;
@@ -366,7 +366,7 @@ function detectFreeze(prediction) {
 
 function detectGameover(prediction) {
     const pose4 = prediction.find(p => p.className === "Armen-omhoog"); // alle poses nog ingeven
-    if (pose4 && pose4.probability > 0.70) {
+    if (pose4 && pose4.probability > 0.80) {
         startPoseTimer("gameover", 5, () => startScreen());
     }
 }

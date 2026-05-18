@@ -6,19 +6,19 @@ let currentScore = 0;
 
 let poseSequence = [
     { name: "tpose", label: "T-POSE" },
-    { name: "handenopheofd", label: "HANDEN OP HOOFD" },
+    { name: "handenophoofd", label: "HANDEN OP HOOFD" },
     { name: "mrkrab", label: "MR. KRAB" },
     { name: "armenomhoog", label: "ARMEN OMHOOG" },
-    { name: "ballerina", label: "BALLERINA" }
+    { name: "sporter", label: "SPORTER" }
 ];
 
 // Map met classNames uit Teachable Machine
 const poseClassMap = {
     tpose: "T-pose",
-    handenopheofd: "Handen-op-hoofd",
+    handenophoofd: "Handen-op-hoofd",
     mrkrab: "Mr-krab",
     armenomhoog: "Armen-omhoog",
-    ballerina: "Ballerina"
+    sporter: "Sporter"
 };
 
 // SCORES
@@ -140,7 +140,7 @@ function updatePoseCard() {
                 desc = 'Armen recht opzij uitgestrekt';
                 imgSrc = 'images/poses_tpose.svg';
 
-            } else if (pose.name === 'handenopheofd') {
+            } else if (pose.name === 'handenophoofd') {
                 desc = 'Beide handen op je hoofd';
                 imgSrc = 'images/poses_handsonhead.svg';
 
@@ -152,9 +152,9 @@ function updatePoseCard() {
                 desc = 'Beide armen omhoog gestrekt';
                 imgSrc = 'images/poses_armenomhoog.svg';
 
-            } else if (pose.name === 'ballerina') {
-                desc = 'Één arm omhoog, andere arm omlaag, één been opzij geheven';
-                imgSrc = 'images/poses_ballerina.svg';
+            } else if (pose.name === 'sporter') {
+                desc = 'Een sporter pose';
+                imgSrc = 'images/poses_sporter.svg';
             }
         }
 

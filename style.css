@@ -38,6 +38,10 @@ html, body {
     padding: 10px 20px;
 }
 
+#gameoverbtn {
+    margin-top: 5em;
+}
+
 #spel .centerpanel {
     padding-top: 1.5em;
 }
@@ -647,15 +651,3 @@ button:hover {
     box-shadow: 0 0 35px rgba(154,225,255,0.6);
     transform: translateY(-1px);
 }
-
-/* Nog toevoegen
-mooiere start buttons ------ ok
-speler namen kader --------- ok
-timers --------------------- ok
-freeze scherm -------------- ok
-scroll game over ----------- ok
-aanduiding titel per pose -- ok
-detectie balkje laten werken ok
-letter size en locatie aanpassen xxxxxxx
-game over scherm aanpassingen ok
-*/

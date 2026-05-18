@@ -188,8 +188,8 @@ async function init() {
     maxPredictions = model.getTotalClasses();
 
     // Convenience function to setup a webcam
-    const sizeX = 400;
-    const sizeY = 400;
+    const sizeX = 460;
+    const sizeY = 460;
     const flip = true; // whether to flip the webcam
     webcam = new tmPose.Webcam(sizeX, sizeY, flip); // width, height, flip
     await webcam.setup(); // request access to the webcam
@@ -283,7 +283,7 @@ function detectStart(prediction) {
     }
 
     // Als pose correct is, start countdown
-    if (score > 0.9 && !started) {
+    if (score > 0.7 && !started) {
         started = true;
 
         // Start een countdown van 3 seconden voordat je naar het spel gaat
@@ -305,7 +305,7 @@ function detectSpel(prediction) {
 
     const poseDetected = prediction.find(p => p.className === className);
 
-    if (poseDetected && poseDetected.probability > 0.90) {
+    if (poseDetected && poseDetected.probability > 0.70) {
 
         const poseCard = document.querySelector('#spel .pose-card');
         if (poseCard) {
@@ -333,7 +333,7 @@ function detectFreeze(prediction) {
     const poseDetected = prediction.find(p => p.className === className);
 
     // Als pose correct is → timer starten
-    if (poseDetected && poseDetected.probability > 0.90) {
+    if (poseDetected && poseDetected.probability > 0.70) {
         startPoseTimer("freeze", 5, () => {
             currentScore += 100; // 100 punten als je de pose correct hebt
             currentPoseIndex++;
@@ -356,7 +356,7 @@ function detectFreeze(prediction) {
 
 function detectGameover(prediction) {
     const pose4 = prediction.find(p => p.className === "Armen-omhoog"); // alle poses nog ingeven
-    if (pose4 && pose4.probability > 0.90) {
+    if (pose4 && pose4.probability > 0.70) {
         startPoseTimer("gameover", 5, () => startScreen());
     }
 }

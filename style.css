@@ -160,6 +160,10 @@ html, body {
     margin-top: 7em;
 }
 
+#webcam-component canvas {
+    display: block;
+    margin: 0 auto;
+}
 
 #canvas {
     border-radius: 10px;

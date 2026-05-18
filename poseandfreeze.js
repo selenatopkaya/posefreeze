@@ -103,16 +103,38 @@ function gameoverScreen() {
 
 startScreen();
 
+// WEBCAM
+
+// functie om webcam naar juiste scherm te verplaatsen
+function moveWebcamTo(slotId) {
+    const slot = document.getElementById(slotId);
+    const webcamComponent = document.getElementById("webcam-component");
+
+    if (slot && webcamComponent) {
+        if (!slot.contains(webcamComponent)) {
+            slot.innerHTML = "";
+            slot.appendChild(webcamComponent);
+        }
+        webcamComponent.style.display = "block";
+    }
+}
+
+
+//POSE KAART & DETECTIE
+
 function updatePoseCard() {
-    // Update the pose card in het spelscherm met de huidige pose info
+    // Update de pose card in het spelscherm met de huidige pose info
     const poseCardName = document.querySelector('#spel .pose-card-name');
     const poseCardDesc = document.querySelector('#spel .pose-card-desc');
     const poseCardImg = document.querySelector('#spel .pose-card img');
+
     if (poseCardName && poseCardDesc && poseCardImg) {
         const pose = poseSequence[currentPoseIndex];
         poseCardName.textContent = pose ? pose.label : '';
+
         let desc = '';
         let imgSrc = '';
+
         if (pose) {
             if (pose.name === 'tpose') {
                 desc = 'Armen recht opzij uitgestrekt';
@@ -135,12 +157,13 @@ function updatePoseCard() {
                 imgSrc = 'images/poses_ballerina.svg';
             }
         }
+
         poseCardDesc.textContent = desc;
         poseCardImg.src = imgSrc;
         poseCardImg.alt = pose ? pose.label : '';
     }
 
-    // Zet active class op het juiste voortgang item
+    // Zet actieve class op het juiste voortgang item
     document.querySelectorAll('.voortgang-item').forEach((item, i) => {
         item.classList.toggle('active', i === currentPoseIndex);
         item.querySelector('.poses-arrow').textContent = i === currentPoseIndex ? '▶' : '';
@@ -148,20 +171,7 @@ function updatePoseCard() {
 }
 
 
-// functie om webcam naar juiste scherm te verplaatsen
-function moveWebcamTo(slotId) {
-    const slot = document.getElementById(slotId);
-    const webcamComponent = document.getElementById("webcam-component");
-
-    if (slot && webcamComponent) {
-        if (!slot.contains(webcamComponent)) {
-            slot.innerHTML = "";
-            slot.appendChild(webcamComponent);
-        }
-        webcamComponent.style.display = "block";
-    }
-}
-
+// TEACHABLE MACHINE
 
 // the link to your model provided by Teachable Machine export panel
 const URL = "./my_model/";
@@ -197,7 +207,7 @@ async function init() {
 }
 
 async function loop(timestamp) {
-    webcam.update(); // update the webcam frame
+    webcam.update(); // update de webcam frame
     await predict();
     window.requestAnimationFrame(loop);
 }
@@ -237,7 +247,9 @@ function drawPose(pose) {
     }
 }
 
-// werkende detectiebalk 
+
+// DETECTIE BALKJES
+
 function updateDetectBar(prediction) {
     let targetClass = null;
 
@@ -258,21 +270,27 @@ function updateDetectBar(prediction) {
         bar.style.width = (score * 100) + "%";
     });
 }
-// detecties
+
+
+// DETECTIE PER SCHERM
 
 function detectStart(prediction) {
     const pose = prediction.find(p => p.className === "Armen-omhoog");
     let score = 0;
+
     if (pose) {
         score = pose.probability;
     }
-    // Show countdown only when pose is detected and not started yet
+
+    // Als pose correct is, start countdown
     if (score > 0.9 && !started) {
         started = true;
-        // Start a 3-second countdown (matching the UI text) before starting the game
+
+        // Start een countdown van 3 seconden voordat je naar het spel gaat
         startPoseTimer("start", 3, () => gameScreen());
     }
-    // If pose is not detected or timer not running, reset countdown to 3
+
+    // Als pose niet correct is en timer nog niet gestart, toon countdown in design
     if (!timerRunning && !started) {
         showCountdownInDesign(3);
     }
@@ -319,8 +337,10 @@ function detectFreeze(prediction) {
         startPoseTimer("freeze", 5, () => {
             currentScore += 100; // 100 punten als je de pose correct hebt
             currentPoseIndex++;
+
+            // Na freeze scherm, direct naar volgende pose of game over
             if (currentPoseIndex < poseSequence.length) {
-                gameScreen(); // GEEN reset!
+                gameScreen();
             } else {
                 gameoverScreen();
             }
@@ -341,6 +361,9 @@ function detectGameover(prediction) {
     }
 }
 
+
+// COUNTDOWN
+
 // Helper to find the visible countdown element in the design
 function getVisibleCountdownElement() {
     // Try .freeze-countdown first (freeze screen), then .centerpanel .countdown (spel/start), fallback to any visible .countdown
@@ -357,6 +380,7 @@ function getVisibleCountdownElement() {
 
 function showCountdownInDesign(seconds) {
     const el = getVisibleCountdownElement();
+
     if (el) {
         el.style.visibility = 'visible';
         el.querySelector('.countdown-number').textContent = seconds;
@@ -365,6 +389,7 @@ function showCountdownInDesign(seconds) {
 
 function updateCountdownInDesign(seconds) {
     const el = getVisibleCountdownElement();
+
     if (el) {
         el.querySelector('.countdown-number').textContent = seconds;
     }
@@ -372,35 +397,43 @@ function updateCountdownInDesign(seconds) {
 
 function hideCountdownInDesign() {
     const el = getVisibleCountdownElement();
+
     if (el) el.style.visibility = 'hidden';
 }
 
 function startPoseTimer(mode, seconds, callback) {
     if (timerRunning) return;
     if (currentMode !== mode) return;
+
     timerRunning = true;
     let timeLeft = seconds;
     showCountdownInDesign(timeLeft);
-    // Disable all .schermbutton buttons during countdown
     const schermButtons = document.querySelectorAll('.schermbutton');
+
     schermButtons.forEach(btn => btn.disabled = true);
+
     const interval = setInterval(() => {
         timeLeft--;
+
         if (timeLeft > 0) {
             updateCountdownInDesign(timeLeft);
+
         } else {
             clearInterval(interval);
             timerRunning = false;
             hideCountdownInDesign();
+
             // Re-enable schermbutton buttons after transition
             setTimeout(() => {
                 schermButtons.forEach(btn => btn.disabled = false);
             }, 600);
+
             // Smooth transition: fade out overlay, then call callback
             setTimeout(() => {
                 callback();
             }, 500);
         }
+        
         if (currentMode !== mode) {
             clearInterval(interval);
             timerRunning = false;

@@ -130,8 +130,6 @@ function gameoverScreen(win = false, reason = "") {
         title.innerHTML = "GAME<br>OVER";
         reasonText.innerText = reason || "Beweging gedetecteerd";
     }
-
-    startPoseTimer("gameover", 5, () => startScreen());
 }
 
 startScreen();

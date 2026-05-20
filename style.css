@@ -235,6 +235,7 @@ html, body {
 
 .screen {
     display: none;
+    z-index: 1;
 }
 
 /*  SPEL SCHERM  */

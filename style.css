@@ -234,7 +234,7 @@ html, body {
 }
 
 .screen {
-    display: none;
+    position: relative;
     z-index: 1;
 }
 

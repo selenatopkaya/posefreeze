@@ -20,7 +20,7 @@ body::before {
     height: 100%;
     background-image: url('images/bg.jpg');
     opacity: 0.2;
-    z-index: 0;
+    z-index: -1;
 }
 
 html, body {
@@ -234,8 +234,8 @@ html, body {
 }
 
 .screen {
-    position: relative;
-    z-index: 1;
+    display: none;
+    background: transparent;
 }
 
 /*  SPEL SCHERM  */

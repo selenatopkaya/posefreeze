@@ -358,6 +358,9 @@ function detectSpel(prediction) {
 
 
 function detectFreeze(prediction) {
+    // Only allow game over on freeze screen
+    if (currentMode !== "freeze") return;
+
     const currentPose = poseSequence[currentPoseIndex];
     if (!currentPose) return;
 
@@ -382,7 +385,7 @@ function detectFreeze(prediction) {
         return;
     }
 
-    // Pose fout → direct game over
+    // Pose fout → direct game over, but only on freeze screen
     gameoverScreen(false, "Beweging gedetecteerd");
 }
 

@@ -1,7 +1,8 @@
 /* Add spacing between detector and timer on game screen */
 #spel .centerpanel .countdown {
-    margin-top: 2.2em;
+    margin-top: 1.2em;
 }
+
 /*  ALGEMEEN  */
 body {
     background-color: rgb(21, 22, 56);
@@ -52,10 +53,6 @@ html, body {
 
 #spel .rightpanel {
     margin-top: 7.5em;
-}
-
-#spel .countdown {
-    margin-top: 1em;
 }
 
 #gameover .leaderboard {
@@ -225,7 +222,6 @@ html, body {
     font-size: 5em;
     color: #9AE1FF;
     text-align: center;
-    margin: 2.8em 0 0 0;
     text-shadow: 0 0 10px #00cfcf;
     display: flex;
     align-items: center;

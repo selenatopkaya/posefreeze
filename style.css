@@ -28,6 +28,10 @@ html, body {
     margin-top: 1.2em;
 }
 
+#countdown-start {
+    margin-top: 2em;
+}
+
 .schermbutton {
     width: 200px;
     height: 50px;
